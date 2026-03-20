@@ -10,7 +10,7 @@ export function useLogout() {
   const {
     isPending: isLoggingOut,
     mutate: logout,
-    error,
+    error: logoutError,
   } = useMutation({
     mutationFn: logoutApi,
 
@@ -23,5 +23,5 @@ export function useLogout() {
     onError: (err) => toast.error(err.message),
   });
 
-  return { isLoggingOut, logout, error };
+  return { isLoggingOut, logout, logoutError };
 }

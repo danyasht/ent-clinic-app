@@ -10,7 +10,7 @@ export function useLogin() {
   const {
     isPending: isLoggingIn,
     mutate: login,
-    error,
+    error: loginError,
   } = useMutation({
     mutationFn: loginApi,
 
@@ -23,5 +23,5 @@ export function useLogin() {
     onError: (err) => toast.error(err.message),
   });
 
-  return { isLoggingIn, login, error };
+  return { isLoggingIn, login, loginError };
 }

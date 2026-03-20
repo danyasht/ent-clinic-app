@@ -1,14 +1,13 @@
 import { useUser } from '@/features/authentication/useUser';
 import Spinner from './Spinner';
 import { Avatar, AvatarFallback } from './avatar';
-import { CalendarDays, User, Users } from 'lucide-react';
 
 export default function Header() {
-  const { isLoading, user, isAuthenticated, error: userError } = useUser();
+  const { isGettingUser, user, isAuthenticated, userError } = useUser();
 
-  if (isLoading) return <Spinner />;
+  if (isGettingUser) return <Spinner />;
 
-  const { id: userId, role, email, full_name: fullName } = user;
+  const { profileId, role, email, fullName } = user;
 
   const userInitials = fullName
     ? fullName

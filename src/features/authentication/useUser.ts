@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 
 export function useUser() {
   const {
-    isLoading,
+    isLoading: isGettingUser,
     data: user,
-    error,
+    error: userError,
   } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser,
@@ -14,9 +14,9 @@ export function useUser() {
   // console.log(user);
 
   return {
-    isLoading,
+    isGettingUser,
     user,
     isAuthenticated: user?.aud === 'authenticated',
-    error,
+    userError,
   };
 }

@@ -11,12 +11,14 @@ import { useState } from 'react';
 import { useDoctors } from '@/features/profiles/useDoctors';
 import { useCreateAppointment } from '@/features/appointments/useCreateAppointment';
 import { useUser } from '@/features/authentication/useUser';
+import Spinner from './Spinner';
 
 interface Service {
-  id: string;
-  name: string;
-  duration: number;
-  price: number;
+  serviceId: string;
+  serviceName: string;
+  serviceDuration: number;
+  servicePrice: number;
+  serviceDescription: string;
 }
 
 export default function BookingModal({ service }: { service: Service }) {
@@ -25,15 +27,22 @@ export default function BookingModal({ service }: { service: Service }) {
   const [doctorId, setDoctorId] = useState('');
   const [time, setTime] = useState('');
 
-  const {
-    isLoading: isGettingDoctors,
-    doctors,
-    error: doctorsError,
-  } = useDoctors();
+  const { isFetchingDoctors, doctors, doctorsError } = useDoctors();
 
-  const { user: { id: patientId } = {}, isLoading } = useUser();
+  const { user, isGettingUser, userError } = useUser();
 
   const { isPending, createAppointment } = useCreateAppointment();
+
+  if (isPending || isFetchingDoctors || isGettingUser) return <Spinner />;
+  if (!doctors || !user) return null;
+
+  const {
+    serviceId,
+    serviceName,
+    serviceDuration,
+    servicePrice,
+    serviceDescription,
+  } = service;
 
   const timeSlots = [
     '09:00',
@@ -51,9 +60,9 @@ export default function BookingModal({ service }: { service: Service }) {
     if (!date) return;
 
     const newAppointment = {
-      patient_id: patientId,
+      patient_id: user?.profileId,
       doctor_id: doctorId,
-      service_id: service.id,
+      service_id: serviceId,
       appointment_date: date?.toLocaleDateString('en-CA'),
       appointment_time: `${time}:00`,
       status: 'unconfirmed',
@@ -69,7 +78,7 @@ export default function BookingModal({ service }: { service: Service }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-emerald-800 font-semibold">
-            Book an appointment for {service.name}
+            Book an appointment for {serviceName}
           </DialogTitle>
         </DialogHeader>
         <div className="flex justify-center py-4">
@@ -90,7 +99,7 @@ export default function BookingModal({ service }: { service: Service }) {
             onChange={(e) => setDoctorId(e.target.value)}
           >
             <option>
-              {isGettingDoctors ? 'Loading doctors...' : 'Select doctor'}
+              {isFetchingDoctors ? 'Loading doctors...' : 'Select doctor'}
             </option>
             {doctors?.map((doctor) => (
               <option value={doctor.id} key={doctor.id}>
@@ -108,9 +117,9 @@ export default function BookingModal({ service }: { service: Service }) {
             onChange={(e) => setTime(e.target.value)}
           >
             <option>Select time</option>
-            {timeSlots?.map((time) => (
-              <option value={time} key={time}>
-                {time}
+            {timeSlots?.map((slot) => (
+              <option value={slot} key={slot}>
+                {slot}
               </option>
             ))}
           </select>

@@ -7,7 +7,7 @@ export default function NotFound() {
         Page not found. Check if the URL is correct :)
       </p>
       <Link
-        to="/"
+        to="/dashboard"
         className="text-blue-500 hover:text-blue-700 text-lg hover:underline"
       >
         &larr; Back to main page

@@ -11,23 +11,30 @@ import {
 import { useUser } from '@/features/authentication/useUser';
 
 export default function Sidebar() {
-  const { isLoggingOut, logout, error: logoutError } = useLogout();
+  const { isLoggingOut, logout, logoutError } = useLogout();
 
-  const { isLoading, user, isAuthenticated, error: userError } = useUser();
+  const { isGettingUser, user, isAuthenticated, userError } = useUser();
 
-  if (isLoading) return <Spinner />;
+  if (isGettingUser || isLoggingOut) return <Spinner />;
+  if (!user) return null;
 
-  const { id: userId, role, email, full_name: fullName } = user;
+  const { profileId, role } = user;
+
+  // FIXME: use hook for private routes, not URL params
 
   const patientLinks = [
-    { name: 'My profile', icon: <User />, to: `/profile/${userId}` },
+    { name: 'My profile', icon: <User />, to: `/profile/${profileId}` },
     { name: 'Main dashboard', icon: <LayoutDashboard />, to: `/dashboard` },
-    { name: 'My appointments', icon: <CalendarDays />, to: '/appointments' },
+    {
+      name: 'My appointments',
+      icon: <CalendarDays />,
+      to: `/appointments`,
+    },
     { name: 'Book appointment', icon: <Stethoscope />, to: '/book' },
   ];
 
   const doctorLinks = [
-    { name: 'My profile', icon: <User />, to: `/profile/${userId}` },
+    { name: 'My profile', icon: <User />, to: `/profile/${profileId}` },
     { name: 'Main dashboard', icon: <LayoutDashboard />, to: `/dashboard` },
     { name: 'My patients', icon: <Users />, to: '/patients' },
   ];

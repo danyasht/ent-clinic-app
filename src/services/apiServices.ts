@@ -5,5 +5,13 @@ export async function getServices() {
 
   if (error) throw new Error(error.message);
 
-  return data;
+  // console.log(data);
+
+  return data.map((service) => ({
+    serviceId: service.id,
+    serviceName: service.name,
+    servicePrice: service.price,
+    serviceDescription: service.description,
+    serviceDuration: service.duration,
+  }));
 }

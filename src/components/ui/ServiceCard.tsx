@@ -4,29 +4,38 @@ import { formatPrice } from '@/helpers/formatPrice';
 import BookingModal from './BookingModal';
 
 interface Service {
-  id: string;
-  name: string;
-  duration: number;
-  price: number;
+  serviceId: string;
+  serviceName: string;
+  serviceDuration: number;
+  servicePrice: number;
+  serviceDescription: string;
 }
 
 export default function ServiceCard({ service }: { service: Service }) {
+  const {
+    serviceId,
+    serviceName,
+    serviceDuration,
+    servicePrice,
+    serviceDescription,
+  } = service;
+
   return (
     <Card>
-      <CardHeader>{service.name}</CardHeader>
+      <CardHeader>{serviceName}</CardHeader>
       <CardContent className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <span>
             <Clock />
           </span>
-          <p>{service.duration} min</p>
+          <p>{serviceDuration} min</p>
         </div>
 
         <div className="flex items-center gap-2">
           <span>
             <Wallet />
           </span>
-          <p>{formatPrice(service.price)}</p>
+          <p>{formatPrice(servicePrice)}</p>
         </div>
       </CardContent>
 

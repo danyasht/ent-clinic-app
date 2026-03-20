@@ -4,19 +4,12 @@ import { useDoctors } from '@/features/profiles/useDoctors';
 import { useServices } from '@/features/services/useServices';
 
 export default function BookAppointment() {
-  const {
-    isLoading: isGettingServices,
-    services,
-    error: servicesError,
-  } = useServices();
+  const { isFetchingServices, services, servicesError } = useServices();
 
-  const {
-    isLoading: isGettingDoctors,
-    doctors,
-    error: doctorsError,
-  } = useDoctors();
+  const { isFetchingDoctors, doctors, doctorsError } = useDoctors();
 
-  if (isGettingServices || isGettingDoctors) return <Spinner />;
+  if (isFetchingServices || isFetchingDoctors) return <Spinner />;
+  if (!services || !doctors) return null;
 
   // console.log(services);
 
@@ -26,8 +19,8 @@ export default function BookAppointment() {
         Select the service you need
       </h1>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services?.map((service) => (
-          <ServiceCard service={service} key={service.id} />
+        {services.map((service) => (
+          <ServiceCard service={service} key={service.serviceId} />
         ))}
       </section>
     </div>

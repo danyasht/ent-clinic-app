@@ -3,13 +3,15 @@ import { useQuery } from '@tanstack/react-query';
 
 export function useServices() {
   const {
-    isLoading,
+    isLoading: isFetchingServices,
     data: services,
-    error,
+    error: servicesError,
   } = useQuery({
     queryKey: ['services'],
     queryFn: getServices,
   });
 
-  return { isLoading, services, error };
+  // console.log(services);
+
+  return { isFetchingServices, services, servicesError };
 }

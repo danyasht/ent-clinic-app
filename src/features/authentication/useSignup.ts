@@ -6,7 +6,7 @@ export function useSignup() {
   const {
     isPending: isSigningUp,
     mutate: signup,
-    error,
+    error: signupError,
   } = useMutation({
     mutationFn: signupApi,
 
@@ -15,5 +15,5 @@ export function useSignup() {
     onError: (err) => toast.error(err.message),
   });
 
-  return { isSigningUp, signup, error };
+  return { isSigningUp, signup, signupError };
 }

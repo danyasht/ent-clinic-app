@@ -3,13 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 
 export function useDoctors() {
   const {
-    isLoading,
+    isLoading: isFetchingDoctors,
     data: doctors,
-    error,
+    error: doctorsError,
   } = useQuery({
     queryKey: ['doctors'],
     queryFn: getDoctors,
   });
 
-  return { isLoading, doctors, error };
+  return { isFetchingDoctors, doctors, doctorsError };
 }

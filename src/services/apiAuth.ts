@@ -43,6 +43,7 @@ export async function getCurrentUser() {
 
   const {
     data: { user },
+    error: userError,
   } = await supabase.auth.getUser();
 
   const { data: profile, error: profileError } = await supabase
@@ -51,10 +52,25 @@ export async function getCurrentUser() {
     .eq('id', user?.id)
     .single();
 
-  if (profileError) throw new Error(profileError.message);
+  const userProfileError = profileError || userError;
+  if (userProfileError) throw new Error(userProfileError.message);
 
-  console.log(user, profile);
-  return { ...user, ...profile };
+  const cleanProfile = {
+    profileId: profile.id,
+    fullName: profile.full_name,
+    role: profile.role,
+    dateOfBirth: profile.date_of_birth,
+    phone: profile.phone,
+  };
+
+  const cleanUser = {
+    email: user?.email,
+    aud: user?.aud,
+    createdAt: user?.created_at,
+  };
+
+  // console.log(cleanUser, cleanProfile);
+  return { ...cleanUser, ...cleanProfile };
 }
 
 export async function logout() {

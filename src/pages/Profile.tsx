@@ -4,17 +4,12 @@ import { useUser } from '@/features/authentication/useUser';
 import { BadgeCheck, Calendar, Mail } from 'lucide-react';
 
 export default function Profile() {
-  const { isLoading, user, error } = useUser();
+  const { isGettingUser, user, userError, isAuthenticated } = useUser();
 
-  if (isLoading) return <Spinner />;
+  if (isGettingUser) return <Spinner />;
+  if (!user) return null;
 
-  const {
-    full_name: fullName,
-    role,
-    date_of_birth: dateOfBirth,
-    phone,
-    email,
-  } = user;
+  const { profileId, fullName, role, email, dateOfBirth } = user;
 
   return (
     <Card className="w-78">
