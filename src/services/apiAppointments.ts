@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase';
 
-export async function createAppointment(newAppointment: any) {
+export async function createAppointment(newAppointment: object) {
   const { data, error } = await supabase
     .from('appointments')
     .insert([newAppointment])
