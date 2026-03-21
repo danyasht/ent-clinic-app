@@ -1,4 +1,4 @@
-import AppointmentRow from '@/components/ui/AppointmentRow';
+import PatientAppointmentRow from '@/components/ui/PatientAppointmentRow';
 import Spinner from '@/components/ui/Spinner';
 import {
   Table,
@@ -7,14 +7,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useAppointments } from '@/features/appointments/useAppointments';
+import { usePatientAppointments } from '@/features/appointments/usePatientAppointments';
 
-export default function Appointments() {
+export default function PatientAppointments() {
   const {
     isFetchingUserAppointments,
     userAppointments,
     userAppointmentsError,
-  } = useAppointments();
+  } = usePatientAppointments();
 
   if (isFetchingUserAppointments) return <Spinner />;
 
@@ -33,7 +33,7 @@ export default function Appointments() {
       </TableHeader>
       <TableBody>
         {userAppointments?.map((appointment) => (
-          <AppointmentRow
+          <PatientAppointmentRow
             appointment={appointment}
             key={appointment.appointmentId}
           />

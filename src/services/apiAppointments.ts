@@ -30,3 +30,23 @@ export async function getUserAppointments(profileId: string) {
     doctorName: appointment.doctor.full_name,
   }));
 }
+
+export async function getDoctorAppointments(doctorId: string) {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select('*, service:services(name), patient:profiles!patient_id(full_name)')
+    .eq('doctor_id', doctorId);
+
+  if (error) throw new Error(error.message);
+
+  return data.map((appointment) => ({
+    appointmentId: appointment.id,
+    isPaid: appointment.is_paid,
+    patientNotes: appointment.patient_notes,
+    status: appointment.status,
+    appointmentTime: appointment.appointment_time,
+    appointmentDate: appointment.appointment_date,
+    serviceName: appointment.service.name,
+    patientName: appointment.patient.full_name,
+  }));
+}

@@ -10,7 +10,7 @@ interface Appointment {
   serviceName: string;
   doctorName: string;
 }
-export default function AppointmentRow({
+export default function PatientAppointmentRow({
   appointment,
 }: {
   appointment: Appointment;

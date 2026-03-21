@@ -23,8 +23,8 @@ export default function Sidebar() {
   // FIXME: use hook for private routes, not URL params
 
   const patientLinks = [
-    { name: 'My profile', icon: <User />, to: `/profile/${profileId}` },
-    { name: 'Main dashboard', icon: <LayoutDashboard />, to: `/dashboard` },
+    { name: 'My profile', icon: <User />, to: '/profile' },
+    { name: 'Main dashboard', icon: <LayoutDashboard />, to: '/dashboard' },
     {
       name: 'My appointments',
       icon: <CalendarDays />,
@@ -34,7 +34,7 @@ export default function Sidebar() {
   ];
 
   const doctorLinks = [
-    { name: 'My profile', icon: <User />, to: `/profile/${profileId}` },
+    { name: 'My profile', icon: <User />, to: '/profile' },
     { name: 'Main dashboard', icon: <LayoutDashboard />, to: `/dashboard` },
     { name: 'My patients', icon: <Users />, to: '/patients' },
   ];
@@ -63,7 +63,7 @@ export default function Sidebar() {
         {role === 'doctor' &&
           doctorLinks.map((link) => (
             <NavLink to={link.to} key={link.to} className={getLinkClass}>
-              <div className="flex items-center justify-start">
+              <div className="flex items-center justify-start gap-3">
                 {link.icon}
                 {link.name}
               </div>
