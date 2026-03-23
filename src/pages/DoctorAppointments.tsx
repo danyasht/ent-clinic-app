@@ -30,7 +30,7 @@ export default function DoctorAppointments() {
             <TableHead>Paid</TableHead>
             <TableHead>Time</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="w-34">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

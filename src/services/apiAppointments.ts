@@ -15,7 +15,9 @@ export async function getUserAppointments(profileId: string) {
   const { data, error } = await supabase
     .from('appointments')
     .select('*, service:services(name), doctor:profiles!doctor_id(full_name)')
-    .eq('patient_id', profileId);
+    .eq('patient_id', profileId)
+    .order('appointment_date', { ascending: true })
+    .order('appointment_time', { ascending: true });
 
   if (error) throw new Error(error.message);
 
@@ -35,7 +37,9 @@ export async function getDoctorAppointments(doctorId: string) {
   const { data, error } = await supabase
     .from('appointments')
     .select('*, service:services(name), patient:profiles!patient_id(full_name)')
-    .eq('doctor_id', doctorId);
+    .eq('doctor_id', doctorId)
+    .order('appointment_date', { ascending: true })
+    .order('appointment_time', { ascending: true });
 
   if (error) throw new Error(error.message);
 
@@ -49,4 +53,24 @@ export async function getDoctorAppointments(doctorId: string) {
     serviceName: appointment.service.name,
     patientName: appointment.patient.full_name,
   }));
+}
+
+export async function updateAppointmentStatus({
+  appointmentId,
+  status,
+}: {
+  appointmentId: string;
+  status: string;
+}) {
+  const { data, error } = await supabase
+    .from('appointments')
+    .update({ status: status })
+    .eq('id', appointmentId)
+    .select();
+
+  if (error) throw new Error(error.message);
+
+  console.log(status);
+
+  return data;
 }

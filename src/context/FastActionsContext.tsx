@@ -1,3 +1,4 @@
+import { MoreVertical } from 'lucide-react';
 import { createContext, useContext, useState, type ReactNode } from 'react';
 
 interface FastActionsContextType {
@@ -42,7 +43,11 @@ function Toggle({ id }: { id: string }) {
     }
   }
 
-  return <button onClick={handleClick}>Open menu</button>;
+  return (
+    <button onClick={handleClick} className="cursor-pointer">
+      <MoreVertical />
+    </button>
+  );
 }
 
 function List({ id, children }: { id: string; children: ReactNode }) {
@@ -50,7 +55,11 @@ function List({ id, children }: { id: string; children: ReactNode }) {
 
   if (openId !== id) return null;
 
-  return <div className="z-10">{children}</div>;
+  return (
+    <div className="z-50 absolute left-8 top-0 bg-white shadow-md rounded-md p-2">
+      {children}
+    </div>
+  );
 }
 
 FastActions.Toggle = Toggle;
