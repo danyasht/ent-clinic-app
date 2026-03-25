@@ -1,8 +1,10 @@
 import { createAppointment as createAppointmentApi } from '@/services/apiAppointments';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 export function useCreateAppointment() {
+  const queryClient = useQueryClient();
+
   const {
     isPending,
     mutate: createAppointment,
@@ -10,7 +12,10 @@ export function useCreateAppointment() {
   } = useMutation({
     mutationFn: createAppointmentApi,
 
-    onSuccess: () => toast.success('Successfully created new appointment'),
+    onSuccess: () => {
+      toast.success('Successfully created new appointment');
+      queryClient.invalidateQueries({ queryKey: ['booked-appointments'] });
+    },
 
     onError: (err) => toast.error(err.message),
   });

@@ -74,3 +74,30 @@ export async function updateAppointmentStatus({
 
   return data;
 }
+
+export async function getBookedAppointments({
+  doctorId,
+  date,
+}: {
+  doctorId: string;
+  date: string;
+}) {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select('*, service:services(name, duration)')
+    .eq('doctor_id', doctorId)
+    .eq('appointment_date', date);
+
+  if (error) throw new Error(error.message);
+
+  return data.map((appointment) => ({
+    appointmentId: appointment.id,
+    isPaid: appointment.is_paid,
+    patientNotes: appointment.patient_notes,
+    status: appointment.status,
+    appointmentTime: appointment.appointment_time,
+    appointmentDate: appointment.appointment_date,
+    serviceName: appointment.service.name,
+    serviceDuration: appointment.service.duration,
+  }));
+}

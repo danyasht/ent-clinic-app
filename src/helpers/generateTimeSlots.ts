@@ -6,7 +6,7 @@ interface parametersType {
   lunchEndTime?: string;
 }
 
-function timeToMins(timeString: string) {
+export function timeToMins(timeString: string) {
   const [hours, mins] = timeString.split(':');
 
   return +hours * 60 + +mins;
@@ -55,7 +55,7 @@ export function generateTimeSlots({
     startTimeMins += slotInterval;
   }
 
-  console.log(slots);
+  // console.log(slots);
 
   return slots;
 }
