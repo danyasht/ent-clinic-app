@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
-import Spinner from '@/components/ui/Spinner';
+import Spinner from '@/components/custom/Spinner';
 import { useLogin } from '@/features/authentication/useLogin';
-import { useSignup } from '@/features/authentication/useSignUp';
+import { useSignup } from '@/features/authentication/useSignup';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

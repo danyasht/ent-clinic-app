@@ -40,13 +40,13 @@ export default function Sidebar() {
   ];
 
   function getLinkClass({ isActive }) {
-    return `block px-4 py-2 rounded transition-colors ${isActive ? 'bg-emerald-900 text-white font-semibold' : 'hover:bg-emerald-700 text-emerald-100'}`;
+    return `block px-4 py-3 rounded transition-colors font-semibold ${isActive ? 'bg-emerald-900 text-emerald-50' : 'hover:bg-emerald-700'}`;
   }
 
   return (
-    <aside className="w-64 bg-emerald-800 text-white flex flex-col">
-      <div className="flex items-center justify-left p-6 text-2xl font-bold border-b border-emerald-700 h-16 ">
-        ENT Dashboard
+    <aside className="w-72 bg-emerald-800 text-emerald-50 flex flex-col gap-4">
+      <div className="flex items-center justify-left p-6 border-b border-emerald-700 h-16 ">
+        <h1 className="text-2xl font-bold">ENT Clinic</h1>
       </div>
 
       <nav className="flex-1 p-4 space-y-5">
@@ -74,14 +74,14 @@ export default function Sidebar() {
       <div className="p-4 border-t border-emerald-700">
         <Link
           to="/"
-          className="block px-4 py-2 text-sm text-emerald-200 hover:text-white"
+          className="cursor-pointer block px-4 py-2 text-md text-emerald-100 hover:text-white transition-colors"
         >
           Back to main page
         </Link>
         <button
           disabled={isLoggingOut}
           onClick={() => logout()}
-          className="cursor-pointer block w-full text-left px-4 py-2 text-sm text-emerald-200 hover:text-white transition-colors"
+          className="cursor-pointer w-full text-start px-4 py-2 block text-md text-emerald-100 hover:text-white transition-colors"
         >
           Log out
         </button>

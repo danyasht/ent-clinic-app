@@ -7,7 +7,7 @@ interface parametersType {
 }
 
 export function timeToMins(timeString: string) {
-  const [hours, mins] = timeString.split(':');
+  const [hours, mins] = timeString.split(":");
 
   return +hours * 60 + +mins;
 }
@@ -16,8 +16,8 @@ function minsToTime(totalMins: number) {
   const hours = Math.floor(totalMins / 60);
   const minutes = totalMins % 60;
 
-  const formattedHours = String(hours).padStart(2, '0');
-  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedHours = String(hours).padStart(2, "0");
+  const formattedMinutes = String(minutes).padStart(2, "0");
 
   return `${formattedHours}:${formattedMinutes}`;
 }
@@ -54,8 +54,6 @@ export function generateTimeSlots({
 
     startTimeMins += slotInterval;
   }
-
-  // console.log(slots);
 
   return slots;
 }

@@ -1,5 +1,5 @@
-import ServiceCard from '@/components/ui/ServiceCard';
-import Spinner from '@/components/ui/Spinner';
+import ServiceCard from '@/components/custom/ServiceCard';
+import Spinner from '@/components/custom/Spinner';
 import { useDoctors } from '@/features/profiles/useDoctors';
 import { useServices } from '@/features/services/useServices';
 

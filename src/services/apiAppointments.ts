@@ -1,8 +1,8 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from "@/lib/supabase";
 
 export async function createAppointment(newAppointment: object) {
   const { data, error } = await supabase
-    .from('appointments')
+    .from("appointments")
     .insert([newAppointment])
     .select();
 
@@ -13,11 +13,11 @@ export async function createAppointment(newAppointment: object) {
 
 export async function getUserAppointments(profileId: string) {
   const { data, error } = await supabase
-    .from('appointments')
-    .select('*, service:services(name), doctor:profiles!doctor_id(full_name)')
-    .eq('patient_id', profileId)
-    .order('appointment_date', { ascending: true })
-    .order('appointment_time', { ascending: true });
+    .from("appointments")
+    .select("*, service:services(name), doctor:profiles!doctor_id(full_name)")
+    .eq("patient_id", profileId)
+    .order("appointment_date", { ascending: true })
+    .order("appointment_time", { ascending: true });
 
   if (error) throw new Error(error.message);
 
@@ -35,11 +35,11 @@ export async function getUserAppointments(profileId: string) {
 
 export async function getDoctorAppointments(doctorId: string) {
   const { data, error } = await supabase
-    .from('appointments')
-    .select('*, service:services(name), patient:profiles!patient_id(full_name)')
-    .eq('doctor_id', doctorId)
-    .order('appointment_date', { ascending: true })
-    .order('appointment_time', { ascending: true });
+    .from("appointments")
+    .select("*, service:services(name), patient:profiles!patient_id(full_name)")
+    .eq("doctor_id", doctorId)
+    .order("appointment_date", { ascending: true })
+    .order("appointment_time", { ascending: true });
 
   if (error) throw new Error(error.message);
 
@@ -63,9 +63,9 @@ export async function updateAppointmentStatus({
   status: string;
 }) {
   const { data, error } = await supabase
-    .from('appointments')
+    .from("appointments")
     .update({ status: status })
-    .eq('id', appointmentId)
+    .eq("id", appointmentId)
     .select();
 
   if (error) throw new Error(error.message);
@@ -83,10 +83,10 @@ export async function getBookedAppointments({
   date: string;
 }) {
   const { data, error } = await supabase
-    .from('appointments')
-    .select('*, service:services(name, duration)')
-    .eq('doctor_id', doctorId)
-    .eq('appointment_date', date);
+    .from("appointments")
+    .select("*, service:services(name, duration)")
+    .eq("doctor_id", doctorId)
+    .eq("appointment_date", date);
 
   if (error) throw new Error(error.message);
 
@@ -100,4 +100,51 @@ export async function getBookedAppointments({
     serviceName: appointment.service.name,
     serviceDuration: appointment.service.duration,
   }));
+}
+
+export async function deleteAppointment(appointmentId: string) {
+  const { error } = await supabase
+    .from("appointments")
+    .delete()
+    .eq("id", appointmentId);
+
+  if (error) throw new Error(error.message);
+}
+
+export async function getAppointmentById(appointmentId: string) {
+  const { data, error } = await supabase
+    .from("appointments")
+    .select(
+      "*, service:services(name, price), patient:profiles!patient_id(full_name, phone), doctor:profiles!doctor_id(full_name)",
+    )
+    .eq("id", appointmentId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return {
+    appointmentId: data.id,
+    aiSummary: data.ai_summary,
+    patientPhone: data.patient.phone,
+    patientName: data.patient.full_name,
+    doctorName: data.doctor.full_name,
+    patientNotes: data.patient_notes,
+    serviceName: data.service.name,
+    appointmentTime: data.appointment_time,
+    appointmentDate: data.appointment_date,
+    status: data.status,
+    servicePrice: data.service.price,
+    isPaid: data.is_paid,
+  };
+}
+
+export async function updateAppointmentPaymentById(appointmentId: string) {
+  const { data, error } = await supabase
+    .from("appointments")
+    .update({ is_paid: true })
+    .eq("id", appointmentId);
+
+  if (error) throw new Error(error.message);
+
+  return data;
 }

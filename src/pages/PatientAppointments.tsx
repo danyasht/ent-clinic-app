@@ -1,5 +1,5 @@
-import PatientAppointmentRow from '@/components/ui/PatientAppointmentRow';
-import Spinner from '@/components/ui/Spinner';
+import PatientAppointmentRow from '@/components/custom/PatientAppointmentRow';
+import Spinner from '@/components/custom/Spinner';
 import {
   Table,
   TableBody,

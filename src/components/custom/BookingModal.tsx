@@ -1,12 +1,12 @@
-import { Button } from './Button';
+import { Button } from '../ui/Button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './dialog';
-import { Calendar } from './calendar';
+} from '../ui/dialog';
+import { Calendar } from '../ui/calendar';
 import { useState } from 'react';
 import { useDoctors } from '@/features/profiles/useDoctors';
 import { useCreateAppointment } from '@/features/appointments/useCreateAppointment';

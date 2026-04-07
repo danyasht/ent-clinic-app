@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Spinner from '@/components/ui/Spinner';
+import Spinner from '@/components/custom/Spinner';
 import { useUser } from '@/features/authentication/useUser';
 import { BadgeCheck, Calendar, Mail } from 'lucide-react';
 

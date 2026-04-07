@@ -1,4 +1,4 @@
-import Spinner from '@/components/ui/Spinner';
+import Spinner from '../components/custom/Spinner';
 import {
   Table,
   TableBody,
@@ -7,8 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useDoctorAppointments } from '@/features/appointments/useDoctorAppointments';
-import DoctorAppointmentRow from '../components/ui/DoctorAppointmentRow';
-import { FastActions } from '@/context/FastActionsContext';
+import DoctorAppointmentRow from '../components/custom/DoctorAppointmentRow';
 
 export default function DoctorAppointments() {
   const {
@@ -20,8 +19,8 @@ export default function DoctorAppointments() {
   if (isFetchingDoctorAppointments) return <Spinner />;
 
   return (
-    <FastActions>
-      <Table>
+    <div className="overflow-y-auto rounded-md border bg-white ">
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
             <TableHead>Service</TableHead>
@@ -30,7 +29,7 @@ export default function DoctorAppointments() {
             <TableHead>Paid</TableHead>
             <TableHead>Time</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead className="w-34">Actions</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -42,6 +41,6 @@ export default function DoctorAppointments() {
           ))}
         </TableBody>
       </Table>
-    </FastActions>
+    </div>
   );
 }

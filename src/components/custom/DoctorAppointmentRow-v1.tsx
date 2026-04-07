@@ -1,7 +1,8 @@
 import { FastActions } from '@/context/FastActionsContext';
-import { TableCell, TableRow } from './table';
+import { TableCell, TableRow } from '../ui/table';
 import { Check, CheckCheck, Trash, X } from 'lucide-react';
 import { useUpdateAppointment } from '@/features/appointments/useUpdateAppointment';
+import { useDeleteAppointment } from '@/features/appointments/useDeleteAppointment';
 
 interface Appointment {
   appointmentId: string;
@@ -19,6 +20,7 @@ export default function DoctorAppointmentRow({
   appointment: Appointment;
 }) {
   const { updateAppointmentStatus } = useUpdateAppointment();
+  const { deleteAppointment } = useDeleteAppointment();
 
   return (
     <TableRow className="h-20">
@@ -85,6 +87,13 @@ export default function DoctorAppointmentRow({
             <span>Complete</span>
           </button>
         </FastActions.List>
+      </TableCell>
+      <TableCell>
+        {appointment.status === 'completed' && (
+          <button onClick={() => deleteAppointment(appointment.appointmentId)}>
+            Delete
+          </button>
+        )}
       </TableCell>
     </TableRow>
   );

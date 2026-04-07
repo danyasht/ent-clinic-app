@@ -1,5 +1,5 @@
 import { Clock, Wallet } from 'lucide-react';
-import { Card, CardContent, CardFooter, CardHeader } from './card';
+import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 import { formatPrice } from '@/helpers/formatPrice';
 import BookingModal from './BookingModal';
 

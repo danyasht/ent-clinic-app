@@ -1,6 +1,6 @@
 import { useUser } from '@/features/authentication/useUser';
 import Spinner from './Spinner';
-import { Avatar, AvatarFallback } from './avatar';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 
 export default function Header() {
   const { isGettingUser, user, isAuthenticated, userError } = useUser();
