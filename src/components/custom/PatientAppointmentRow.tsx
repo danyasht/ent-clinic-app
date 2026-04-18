@@ -1,26 +1,19 @@
-import { getStatusBadge } from "@/helpers/statusBadge";
-import { TableCell, TableRow } from "../ui/table";
-import Tag from "./Tag";
+import type { PatientAppointment } from '@/types';
 
-interface Appointment {
-  appointmentId: string;
-  isPaid: boolean;
-  patientNotes: string;
-  status: string;
-  appointmentTime: string;
-  appointmentDate: string;
-  serviceName: string;
-  doctorName: string;
-}
+import { getStatusBadge } from '@/helpers/statusBadge';
+
+import { TableCell, TableRow } from '../ui/table';
+import Tag from './Tag';
+
 export default function PatientAppointmentRow({
   appointment,
 }: {
-  appointment: Appointment;
+  appointment: PatientAppointment;
 }) {
   const { serviceName, doctorName, status, appointmentTime, appointmentDate } =
     appointment;
   return (
-    <TableRow>
+    <TableRow className="pointer-events-none h-20">
       <TableCell>
         <Tag toDisplay={serviceName} />
       </TableCell>

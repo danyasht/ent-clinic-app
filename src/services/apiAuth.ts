@@ -1,3 +1,4 @@
+import { mapProfile } from '@/helpers/mappers';
 import { supabase } from '@/lib/supabase';
 
 interface Credentials {
@@ -24,9 +25,7 @@ export async function signup({ email, password, fullName }: Credentials) {
   const newUserId = data.user?.id;
   if (newUserId && fullName) {
     const newUser = { id: newUserId, role: 'patient', full_name: fullName };
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert(newUser);
+    const { error: profileError } = await supabase.from('profiles').insert(newUser);
     if (profileError) throw new Error(profileError.message);
   }
   return data;
@@ -46,34 +45,28 @@ export async function getCurrentUser() {
     error: userError,
   } = await supabase.auth.getUser();
 
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user?.id)
-    .single();
+  if (!user) throw new Error('User not found');
+
+  const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', user.id).single();
 
   const userProfileError = profileError || userError;
   if (userProfileError) throw new Error(userProfileError.message);
 
-  const cleanProfile = {
-    profileId: profile.id,
-    fullName: profile.full_name,
-    role: profile.role,
-    dateOfBirth: profile.date_of_birth,
-    phone: profile.phone,
-  };
-
-  const cleanUser = {
-    email: user?.email,
-    aud: user?.aud,
-    createdAt: user?.created_at,
-  };
-
   // console.log(cleanUser, cleanProfile);
-  return { ...cleanUser, ...cleanProfile };
+  return mapProfile(profile, user);
 }
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(error.message);
+}
+
+export async function updateCurrentUserPassword(newPassword: string) {
+  const { data, error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
 }

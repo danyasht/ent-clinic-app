@@ -1,45 +1,29 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Spinner from '@/components/custom/Spinner';
 import { useUser } from '@/features/authentication/useUser';
-import { BadgeCheck, Calendar, Mail } from 'lucide-react';
+
+import ProfilePreferences from '@/components/custom/ProfilePreferences';
+import ProfilePrimaryInfo from '@/components/custom/ProfilePrimaryInfo';
+import Spinner from '@/components/custom/Spinner';
+import ProfilePassword from '@/components/custom/ProfilePassword';
+import ProfileAdditionalInfo from '@/components/custom/ProfileAdditionalInfo';
+import DetailBackNav from '@/components/custom/DetailBackNav';
 
 export default function Profile() {
   const { isGettingUser, user, userError, isAuthenticated } = useUser();
 
-  if (isGettingUser) return <Spinner />;
+  if (isGettingUser) return <Spinner fullScreen />;
+
   if (!user) return null;
 
-  const { profileId, fullName, role, email, dateOfBirth } = user;
-
   return (
-    <Card className="w-78">
-      <CardHeader>
-        <CardTitle>{`Your profile, ${fullName}`}</CardTitle>
-      </CardHeader>
+    <section className="mx-auto max-w-6xl">
+      <DetailBackNav description="Profile details" className="mx-4" />
 
-      <CardContent className="flex flex-col gap-5">
-        <div className="flex justify-start items-center gap-2">
-          <Mail />
-          <span>
-            <b>Email:</b> {email}
-          </span>
-        </div>
-
-        <div className="flex justify-start items-center gap-2">
-          <BadgeCheck />
-          <span>
-            <b>Role:</b> {role === 'patient' ? 'Patient' : 'Doctor'}
-          </span>
-        </div>
-
-        <div className="flex justify-start items-center gap-2">
-          <Calendar />
-          <span>
-            <b>Date of birth:</b>{' '}
-            {dateOfBirth ? dateOfBirth : 'Not specified yet'}
-          </span>
-        </div>
-      </CardContent>
-    </Card>
+      <div className="grid grid-cols-1 px-4 md:grid-cols-2 md:gap-3">
+        <ProfilePrimaryInfo user={user} />
+        <ProfilePassword />
+        {user.role === 'patient' && <ProfilePreferences user={user} />}
+        <ProfileAdditionalInfo user={user} />
+      </div>
+    </section>
   );
 }

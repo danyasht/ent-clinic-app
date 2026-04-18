@@ -30,10 +30,10 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const { isLoggingIn, login, error: loginError } = useLogin();
-  const { isSigningUp, signup, error: registerError } = useSignup();
+  const { isLoggingIn, login, loginError } = useLogin();
+  const { isSigningUp, signup, signupError } = useSignup();
 
-  const errorMessage = loginError?.message || registerError?.message;
+  const errorMessage = loginError?.message || signupError?.message;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -60,28 +60,28 @@ export default function Login() {
     setFormData({ email: '', password: '', fullName: '' });
   }
 
-  if (isSigningUp || isLoggingIn) return <Spinner />;
+  if (isSigningUp || isLoggingIn) return <Spinner fullScreen />;
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex h-screen items-center justify-center">
       <Card className="w-100">
         <CardHeader>
           <Button
-            className="w-fit px-2 mb-2 -ml-2 text-stone-500 hover:text-stone-800 cursor-pointer"
+            className="mb-2 -ml-2 w-fit cursor-pointer px-2 text-stone-500 hover:text-stone-800"
             type="button"
             variant="ghost"
             onClick={() => navigate('/')}
           >
             &larr; Back
           </Button>
-          <CardTitle className="font-bold text-xl">
+          <CardTitle className="text-xl font-bold">
             {isLogin ? 'Log in' : 'Register'}
           </CardTitle>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="flex flex-col gap-4 mb-4">
+          <CardContent className="mb-4 flex flex-col gap-4">
             {errorMessage && (
-              <div className="bg-red-50 text-red-600 text-sm px-3 py-2 rounded-md border border-red-200">
+              <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
                 {errorMessage}
               </div>
             )}
@@ -141,7 +141,7 @@ export default function Login() {
               {isLogin ? 'No account?' : 'I have an account'}
               <button
                 type="button"
-                className="text-emerald-700 hover:underline font-medium ml-1 cursor-pointer"
+                className="ml-1 cursor-pointer font-medium text-emerald-700 hover:underline"
                 onClick={() => setIsLogin((isLogin) => !isLogin)}
               >
                 {isLogin ? 'Register' : 'Log in'}

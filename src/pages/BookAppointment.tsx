@@ -8,17 +8,17 @@ export default function BookAppointment() {
 
   const { isFetchingDoctors, doctors, doctorsError } = useDoctors();
 
-  if (isFetchingServices || isFetchingDoctors) return <Spinner />;
   if (!services || !doctors) return null;
+  if (isFetchingServices || isFetchingDoctors) return <Spinner />;
 
   // console.log(services);
 
   return (
     <div>
-      <h1 className="font-bold text-lg mb-5 text-emerald-800">
+      <h1 className="mb-5 text-lg font-bold text-emerald-800">
         Select the service you need
       </h1>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => (
           <ServiceCard service={service} key={service.serviceId} />
         ))}

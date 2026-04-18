@@ -15,6 +15,7 @@ export function useCreateAppointment() {
     onSuccess: () => {
       toast.success('Successfully created new appointment');
       queryClient.invalidateQueries({ queryKey: ['booked-appointments'] });
+      queryClient.invalidateQueries({ queryKey: ['doctor-appointments'] });
     },
 
     onError: (err) => toast.error(err.message),

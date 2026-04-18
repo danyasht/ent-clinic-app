@@ -72,7 +72,7 @@ export function useAvailableSlots({
     return true;
   });
 
-  console.log(availableSlots);
+  // console.log(availableSlots);
 
   return {
     isLoadingSlots: isFetchingBookedAppointments || isFetchingSchedule,
