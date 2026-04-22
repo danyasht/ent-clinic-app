@@ -12,7 +12,7 @@ export function useSignup() {
 
     onSuccess: () => toast.success('Account created, please log in!'),
 
-    onError: (err) => toast.error(err.message),
+    onError: (error) => toast.error(error.message),
   });
 
   return { isSigningUp, signup, signupError };

@@ -16,11 +16,11 @@ export function useLogin() {
 
     onSuccess: (data) => {
       queryClient.setQueryData(['user'], data.user);
-      toast.success(`Welcome back, ${data.user?.email}!`);
+      toast.success(`Welcome, ${data.user?.email}!`);
       navigate('/dashboard', { replace: true });
     },
 
-    onError: (err) => toast.error(err.message),
+    onError: (error) => toast.error(error.message),
   });
 
   return { isLoggingIn, login, loginError };

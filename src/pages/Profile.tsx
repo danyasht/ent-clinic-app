@@ -1,45 +1,34 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Spinner from '@/components/custom/Spinner';
 import { useUser } from '@/features/authentication/useUser';
-import { BadgeCheck, Calendar, Mail } from 'lucide-react';
+
+import ProfilePreferences from '@/components/custom/ProfilePreferences';
+import ProfilePrimaryInfo from '@/components/custom/ProfilePrimaryInfo';
+import Spinner from '@/components/custom/Spinner';
+import ProfilePassword from '@/components/custom/ProfilePassword';
+import ProfileAdditionalInfo from '@/components/custom/ProfileAdditionalInfo';
+import ErrorFallback from '@/components/custom/ErrorFallback';
+import DoctorProfileScheduleSettings from '@/components/custom/DoctorProfileScheduleSettings';
+import { useDoctorSchedule } from '@/features/schedule/useDoctorSchedule';
 
 export default function Profile() {
-  const { isGettingUser, user, userError, isAuthenticated } = useUser();
+  const { isGettingUser, user } = useUser();
 
-  if (isGettingUser) return <Spinner />;
-  if (!user) return null;
+  const { isFetchingSchedule, schedule, scheduleError } = useDoctorSchedule();
 
-  const { profileId, fullName, role, email, dateOfBirth } = user;
+  if (isGettingUser) return <Spinner fullScreen />;
+
+  if (!user) return <ErrorFallback errorMessage="User not found" />;
+
+  if (!schedule) return <ErrorFallback errorMessage={scheduleError?.message} />;
 
   return (
-    <Card className="w-78">
-      <CardHeader>
-        <CardTitle>{`Your profile, ${fullName}`}</CardTitle>
-      </CardHeader>
-
-      <CardContent className="flex flex-col gap-5">
-        <div className="flex justify-start items-center gap-2">
-          <Mail />
-          <span>
-            <b>Email:</b> {email}
-          </span>
-        </div>
-
-        <div className="flex justify-start items-center gap-2">
-          <BadgeCheck />
-          <span>
-            <b>Role:</b> {role === 'patient' ? 'Patient' : 'Doctor'}
-          </span>
-        </div>
-
-        <div className="flex justify-start items-center gap-2">
-          <Calendar />
-          <span>
-            <b>Date of birth:</b>{' '}
-            {dateOfBirth ? dateOfBirth : 'Not specified yet'}
-          </span>
-        </div>
-      </CardContent>
-    </Card>
+    <section className="mx-auto p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-3">
+        <ProfilePrimaryInfo user={user} />
+        <ProfilePassword />
+        {user.role === 'patient' && <ProfilePreferences user={user} />}
+        {user.role === 'doctor' && <DoctorProfileScheduleSettings schedule={schedule} />}
+        <ProfileAdditionalInfo user={user} />
+      </div>
+    </section>
   );
 }

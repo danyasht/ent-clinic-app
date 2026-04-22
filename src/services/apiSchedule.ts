@@ -1,3 +1,4 @@
+import { mapSchedule, mapSingleSchedule } from '@/helpers/mappers';
 import { supabase } from '@/lib/supabase';
 
 export async function getSchedule() {
@@ -8,12 +9,44 @@ export async function getSchedule() {
   // console.log(data);
 
   return data.map((column) => ({
-    scheduleId: column.id,
-    doctorId: column.doctor_id,
-    workStartTime: column.work_start,
-    workEndTime: column.work_end,
-    lunchStartTime: column.lunch_start,
-    lunchEndTime: column.lunch_end,
-    slotInterval: column.slot_interval,
+    ...mapSchedule(column),
   }));
+}
+
+export async function getDoctorScheduleById(doctorId: string) {
+  const { data: schedule, error } = await supabase
+    .from('doctor_schedules')
+    .select('*')
+    .eq('doctor_id', doctorId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  // console.log(schedule);
+
+  return mapSingleSchedule(schedule);
+}
+
+interface UpdateArgs {
+  workStart: string;
+  workEnd: string;
+  lunchStart: string;
+  lunchEnd: string;
+  bufferTime: number;
+}
+
+export async function updateDoctorSchedule({ workStart, workEnd, lunchStart, lunchEnd, bufferTime }: UpdateArgs) {
+  const { data, error } = await supabase
+    .from('doctor_schedules')
+    .update({
+      work_start: workStart,
+      work_end: workEnd,
+      lunch_start: lunchStart,
+      lunch_end: lunchEnd,
+      buffer_time: bufferTime,
+    });
+
+  if (error) throw new Error(error.message);
+
+  return data;
 }

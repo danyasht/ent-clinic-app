@@ -1,3 +1,4 @@
+import { mapService } from '@/helpers/mappers';
 import { supabase } from '@/lib/supabase';
 
 export async function getServices() {
@@ -8,10 +9,6 @@ export async function getServices() {
   // console.log(data);
 
   return data.map((service) => ({
-    serviceId: service.id,
-    serviceName: service.name,
-    servicePrice: service.price,
-    serviceDescription: service.description,
-    serviceDuration: service.duration,
+    ...mapService(service),
   }));
 }

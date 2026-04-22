@@ -20,7 +20,7 @@ export function useLogout() {
       toast.success('Successfully logged out');
     },
 
-    onError: (err) => toast.error(err.message),
+    onError: (error) => toast.error(error.message),
   });
 
   return { isLoggingOut, logout, logoutError };

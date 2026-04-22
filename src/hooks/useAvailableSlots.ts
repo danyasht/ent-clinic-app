@@ -8,16 +8,25 @@ interface Arguments {
   serviceDuration: number;
 }
 
-export function useAvailableSlots({
-  doctorId,
-  formattedDate,
-  serviceDuration,
-}: Arguments) {
+export function useAvailableSlots({ doctorId, formattedDate, serviceDuration }: Arguments) {
   const { isFetchingSchedule, schedule, scheduleError } = useSchedule();
 
-  const selectedDoctorSchedule = schedule?.find(
-    (schedule) => schedule.doctorId === doctorId,
+  console.log(schedule);
+
+  const { isFetchingBookedAppointments, bookedAppointments, bookedAppointmentsError } = useBookedAppointments(
+    doctorId,
+    formattedDate,
   );
+
+  const selectedDoctorSchedule = schedule?.find((schedule) => schedule.doctorId === doctorId);
+
+  if (!selectedDoctorSchedule)
+    return {
+      isLoadingSlots: isFetchingSchedule || isFetchingBookedAppointments,
+      availableSlots: [],
+      scheduleError,
+      bookedAppointmentsError,
+    };
 
   const {
     workStartTime,
@@ -25,6 +34,7 @@ export function useAvailableSlots({
     lunchStartTime,
     lunchEndTime,
     slotInterval,
+    bufferTime = 10,
   } = selectedDoctorSchedule || {};
 
   const timeSlots = generateTimeSlots({
@@ -35,25 +45,12 @@ export function useAvailableSlots({
     slotInterval,
   });
 
-  const {
-    isFetchingBookedAppointments,
-    bookedAppointments,
-    bookedAppointmentsError,
-  } = useBookedAppointments(doctorId, formattedDate);
-
   const activeAppointments = bookedAppointments
     ? bookedAppointments
-        .filter(
-          (appointment) =>
-            appointment.status !== 'cancelled' &&
-            appointment.status !== 'completed',
-        )
+        .filter((appointment) => appointment.status !== 'cancelled' && appointment.status !== 'completed')
         .map((appointment) => ({
           start: timeToMins(appointment.appointmentTime),
-          end:
-            timeToMins(appointment.appointmentTime) +
-            appointment.serviceDuration +
-            10,
+          end: timeToMins(appointment.appointmentTime) + appointment.serviceDuration + bufferTime,
         }))
     : [];
 
@@ -63,19 +60,19 @@ export function useAvailableSlots({
 
     if (slotEnd > timeToMins(workEndTime)) return false;
 
-    const isOverlapping = activeAppointments.some(
-      (blocker) => slotStart < blocker.end && slotEnd > blocker.start,
-    );
+    const isOverlapping = activeAppointments.some((blocker) => slotStart < blocker.end && slotEnd > blocker.start);
 
     if (isOverlapping) return false;
 
     return true;
   });
 
-  console.log(availableSlots);
+  // console.log(availableSlots);
 
   return {
     isLoadingSlots: isFetchingBookedAppointments || isFetchingSchedule,
     availableSlots,
+    scheduleError,
+    bookedAppointmentsError,
   };
 }

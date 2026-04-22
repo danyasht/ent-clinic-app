@@ -1,15 +1,11 @@
+import { formatPrice } from '@/helpers/formatPrice';
+
+import type { Service } from '@/types';
+
 import { Clock, Wallet } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
-import { formatPrice } from '@/helpers/formatPrice';
-import BookingModal from './BookingModal';
 
-interface Service {
-  serviceId: string;
-  serviceName: string;
-  serviceDuration: number;
-  servicePrice: number;
-  serviceDescription: string;
-}
+import BookingModal from './BookingModal';
 
 export default function ServiceCard({ service }: { service: Service }) {
   const {
