@@ -36,15 +36,13 @@ interface UpdateArgs {
 }
 
 export async function updateDoctorSchedule({ workStart, workEnd, lunchStart, lunchEnd, bufferTime }: UpdateArgs) {
-  const { data, error } = await supabase
-    .from('doctor_schedules')
-    .update({
-      work_start: workStart,
-      work_end: workEnd,
-      lunch_start: lunchStart,
-      lunch_end: lunchEnd,
-      buffer_time: bufferTime,
-    });
+  const { data, error } = await supabase.from('doctor_schedules').update({
+    work_start: workStart,
+    work_end: workEnd,
+    lunch_start: lunchStart,
+    lunch_end: lunchEnd,
+    buffer_time: bufferTime,
+  });
 
   if (error) throw new Error(error.message);
 
