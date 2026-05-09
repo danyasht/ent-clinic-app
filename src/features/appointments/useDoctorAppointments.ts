@@ -12,7 +12,7 @@ export function useDoctorAppointments() {
 
   const searchQuery = searchParams.get('serviceName') || '';
 
-  const filterBy = searchParams.get('status') || 'confirmed';
+  const filterBy = searchParams.get('status') || 'all';
 
   const [field, value] = sortDefault.split('-');
 

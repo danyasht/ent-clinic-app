@@ -25,7 +25,7 @@ export async function getUserAppointments({
 }) {
   let query = supabase
     .from('appointments')
-    .select('*, service:services(name), doctor:profiles!doctor_id(full_name)')
+    .select('*, service:services(name, price), doctor:profiles!doctor_id(full_name)')
     .eq('patient_id', profileId);
 
   if (sortBy) {

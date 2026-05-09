@@ -18,9 +18,10 @@ export async function getDoctorScheduleById(doctorId: string) {
     .from('doctor_schedules')
     .select('*')
     .eq('doctor_id', doctorId)
-    .single();
+    .maybeSingle();
 
   if (error) throw new Error(error.message);
+  if (!schedule) return null;
 
   // console.log(schedule);
 
@@ -28,21 +29,39 @@ export async function getDoctorScheduleById(doctorId: string) {
 }
 
 interface UpdateArgs {
+  doctorId: string;
   workStart: string;
   workEnd: string;
   lunchStart: string;
   lunchEnd: string;
   bufferTime: number;
+  slotInterval: number;
 }
 
-export async function updateDoctorSchedule({ workStart, workEnd, lunchStart, lunchEnd, bufferTime }: UpdateArgs) {
-  const { data, error } = await supabase.from('doctor_schedules').update({
-    work_start: workStart,
-    work_end: workEnd,
-    lunch_start: lunchStart,
-    lunch_end: lunchEnd,
-    buffer_time: bufferTime,
-  });
+export async function updateDoctorSchedule({
+  doctorId,
+  workStart,
+  workEnd,
+  lunchStart,
+  lunchEnd,
+  bufferTime,
+  slotInterval,
+}: UpdateArgs) {
+  const { data, error } = await supabase
+    .from('doctor_schedules')
+    .upsert(
+      {
+        doctor_id: doctorId,
+        work_start: workStart,
+        work_end: workEnd,
+        lunch_start: lunchStart,
+        lunch_end: lunchEnd,
+        buffer_time: bufferTime,
+        slot_interval: slotInterval,
+      },
+      { onConflict: 'doctor_id' },
+    )
+    .select();
 
   if (error) throw new Error(error.message);
 

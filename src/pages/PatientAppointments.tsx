@@ -16,6 +16,8 @@ export default function PatientAppointments() {
 
   const sortBy = searchParams.get('sortBy') || 'appointmentDate-desc';
 
+  console.log(userAppointments);
+
   const navigate = useNavigate();
 
   const selectSortItems = [

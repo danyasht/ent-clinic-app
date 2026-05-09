@@ -9,6 +9,7 @@ interface AppointmentFromDb {
   ai_summary: string;
   updated_at: string;
   service: {
+    price: number;
     name: string;
     [key: string]: unknown;
   };
@@ -38,6 +39,7 @@ export function mapBaseAppointment(appointment: AppointmentFromDb) {
     updatedAt: appointment.updated_at,
     paidAt: appointment.paid_at,
     serviceName: appointment.service?.name,
+    servicePrice: appointment.service?.price,
   };
 }
 

@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
 import FilterSelect from '@/components/custom/FilterSelect';
 import { useToggleSortFilterBy } from '@/hooks/useToggleSortFilterBy';
-
 export default function DoctorAppointments() {
   // const inputRef = useRef<HTMLInputElement>(null);
 
@@ -61,6 +60,8 @@ export default function DoctorAppointments() {
   ];
 
   if (isFetchingDoctorAppointments) return <Spinner fullScreen />;
+
+  console.log(doctorAppointments);
 
   return (
     <div>

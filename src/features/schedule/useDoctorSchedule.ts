@@ -1,18 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { useUser } from '../authentication/useUser';
 import { getDoctorScheduleById } from '@/services/apiSchedule';
 
-export function useDoctorSchedule() {
-  const { user } = useUser();
-  const profileId = user ? user.profileId : '';
-
+export function useDoctorSchedule({ doctorId, enabled }: { doctorId: string; enabled: boolean }) {
   const {
     isLoading: isFetchingSchedule,
     data: schedule,
     error: scheduleError,
   } = useQuery({
-    queryKey: ['doctor-schedule', profileId],
-    queryFn: () => getDoctorScheduleById(profileId),
+    queryKey: ['doctor-schedule', doctorId],
+    queryFn: () => getDoctorScheduleById(doctorId),
+    enabled: enabled && !!doctorId,
   });
 
   return { isFetchingSchedule, schedule, scheduleError };
